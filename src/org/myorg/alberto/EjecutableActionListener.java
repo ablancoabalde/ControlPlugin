@@ -28,6 +28,7 @@ import org.openide.util.NbBundle.Messages;
 public final class EjecutableActionListener extends AbstractAction implements ActionListener {
 
     String directorio;
+    String dfichero;
     String fichero;
     String clase;
     String so;
@@ -36,16 +37,25 @@ public final class EjecutableActionListener extends AbstractAction implements Ac
     @Override
     @SuppressWarnings("empty-statement")
     public void actionPerformed(ActionEvent e) {
-        directorio = JOptionPane.showInputDialog("Directorio");
-        fichero = JOptionPane.showInputDialog("Fichero");
-        clase = JOptionPane.showInputDialog("Clase");
+        /**
+         * SO Extensión del ejecutable 
+         * directorio donde va a guardar el programa
+         * dfichero directorio donde está el fichero 
+         * fichero nombre.jar 
+         * clasenombre paquete.nombreMain 
+         * Nombre del proyecto
+         */
         so = JOptionPane.showInputDialog("Extension S.O");
+        directorio = JOptionPane.showInputDialog("Directorio guardar");
+        dfichero = JOptionPane.showInputDialog("Directorio fichero");
+        fichero = JOptionPane.showInputDialog("Nombre fichero");
+        clase = JOptionPane.showInputDialog("Clase");
         nombre = JOptionPane.showInputDialog("Nombre");
 
         try {
 
             String[] cmd = {"javapackager", " -deploy", " -native", so, " -outdir",
-                directorio, " -outfile", clase, " -srcdir", directorio, " -srcfiles", fichero, " -appclass", clase, " -name", nombre, " -title", nombre};
+                directorio, " -outfile", nombre, " -srcdir", dfichero, " -srcfiles", fichero, " -appclass", clase, " -name", nombre, " -title", nombre};
 
             Process process = Runtime.getRuntime().exec(cmd);
             InputStream inputstream = process.getInputStream();
