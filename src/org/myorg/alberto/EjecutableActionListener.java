@@ -3,8 +3,10 @@ package org.myorg.alberto;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import javax.swing.AbstractAction;
 import javax.swing.JOptionPane;
 import org.openide.DialogDisplayer;
@@ -25,6 +27,10 @@ import org.openide.util.NbBundle.Messages;
 )
 @ActionReference(path = "Toolbars/File", position = 0)
 @Messages("CTL_EjecutableActionListener=Ejecutable")
+
+/**
+ * El disparador de la clase
+ */
 public final class EjecutableActionListener extends AbstractAction implements ActionListener {
 
     String directorio;
@@ -33,7 +39,11 @@ public final class EjecutableActionListener extends AbstractAction implements Ac
     String clase;
     String so;
     String nombre;
-
+    String cmd;
+/**
+ * Ejecutar el metodo
+ * @param e 
+ */
     @Override
     @SuppressWarnings("empty-statement")
     public void actionPerformed(ActionEvent e) {
@@ -54,15 +64,16 @@ public final class EjecutableActionListener extends AbstractAction implements Ac
 
         try {
 
-            String[] cmd = {"javapackager", " -deploy", " -native", so, " -outdir",
-                directorio, " -outfile", nombre, " -srcdir", dfichero, " -srcfiles", fichero, " -appclass", clase, " -name", nombre, " -title", nombre};
-
-            Process process = Runtime.getRuntime().exec(cmd);
-            InputStream inputstream = process.getInputStream();
-            BufferedInputStream bufferedinputstream = new BufferedInputStream(inputstream);
+             cmd = "javapackager"+ " -deploy "+ " -native "+ so+ " -outdir "+
+                directorio+ " -outfile "+ nombre+ " -srcdir "+ dfichero+ " -srcfiles "+ fichero+ " -appclass "+ clase+ " -name "+ nombre+ " -title "+ nombre;
+            Runtime rt =Runtime.getRuntime();
+            Process process = rt.exec(cmd);
+            BufferedReader input= new BufferedReader(new InputStreamReader(process.getInputStream()));
             JOptionPane.showMessageDialog(null, "Exito");
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
+           JOptionPane.showMessageDialog(null, "error"+cmd);
+
         }
 
     }
